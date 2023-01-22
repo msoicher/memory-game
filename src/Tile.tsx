@@ -6,9 +6,9 @@ const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
   justify-content: center;
   align-items: center;
   border: 1px solid black;
-  width: 120px;
-  height: 120px;
-  isDisabled &:hover {
+  width: 100px;
+  height: 100px;
+  &:hover {
     cursor: pointer;
   }
   ${(props) => props.isOpen && "color: red;"}
@@ -24,6 +24,7 @@ type TileProps = {
   successCards: number[];
   isDisabled: boolean;
 };
+
 const Tile = (props: TileProps) => {
   const {
     tileValue,
@@ -45,15 +46,12 @@ const Tile = (props: TileProps) => {
 
   const [isOpen, setIsOpen] = useState(isSuccessCard);
 
-  const valueToShow = isOpen ? tileValue : "X";
+  const valueToShow = isOpen ? tileValue : "?";
 
-  // Only do anything here if we aren't a success card.
   const handleTileClick = (tileValue: number) => {
-    if (!isSuccessCard()) {
-      setNumCardsOpen(numCardsOpen + 1);
-      setIsOpen(!isOpen); // we could be just turning 1 card around independently.
-      setCardsOpenArray(tileValue);
-    }
+    setNumCardsOpen(numCardsOpen + 1);
+    setIsOpen(!isOpen); // we could be just turning 1 card around independently.
+    setCardsOpenArray(tileValue);
   };
 
   const setCardsOpenArray = (tileValue: number) => {
@@ -66,7 +64,10 @@ const Tile = (props: TileProps) => {
     <Container
       isOpen={isOpen}
       isDisabled={isDisabled}
-      onClick={() => isDisabled || (!isOpen && handleTileClick(tileValue))}
+      onClick={() =>
+        isDisabled ||
+        (!isOpen && !isSuccessCard() && handleTileClick(tileValue))
+      }
     >
       <h1>{valueToShow}</h1>
     </Container>

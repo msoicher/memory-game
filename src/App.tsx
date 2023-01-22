@@ -15,6 +15,12 @@ const Container = styled.div`
   margin: auto;
 `;
 
+const StyledButton = styled.button`
+  border-radius: 25px;
+  background-color: #4681f4;
+  margin-bottom: 20px;
+`;
+
 const App = () => {
   const [board, setBoard] = useState<number[][]>([
     [1, 4, 6],
@@ -43,8 +49,10 @@ const App = () => {
     isDisabled,
   };
 
+  const resetGame = () => window.location.reload();
+
   const onSuccessfulGame = async () => {
-    await wait(1000);
+    await wait(500);
     setHasWon(true);
   };
 
@@ -71,7 +79,7 @@ const App = () => {
 
   const disableCards = async () => {
     setIsDisabled(true);
-    await wait(1000);
+    await wait(500);
     setIsDisabled(false);
   };
 
@@ -86,7 +94,12 @@ const App = () => {
   return (
     <Container>
       <h1>Memory Game</h1>
-      {hasWon && <h2>Congrats! You won!</h2>}
+      {hasWon && (
+        <>
+          <h2>Congrats! You won!</h2>
+          <StyledButton onClick={resetGame}>Reset game</StyledButton>
+        </>
+      )}
       <Grid>
         {board.map((row: number[]) =>
           row.map((value: number) => <Tile tileValue={value} {...props} />)
