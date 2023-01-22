@@ -4,6 +4,7 @@ import Tile from "./Tile";
 import "./App.css";
 import { wait } from "./utils";
 import { isMatch } from "./Helpers";
+import Confetti from "react-confetti";
 
 const Grid = styled.div`
   display: grid;
@@ -60,14 +61,9 @@ const App = () => {
 
   const resetGame = () => window.location.reload();
 
-  const onSuccessfulGame = async () => {
-    await wait(500);
-    setHasWon(true);
-  };
-
   useEffect(() => {
-    if (successCards.length === (board.length * board[0].length) / 2)
-      onSuccessfulGame();
+    successCards.length === (board.length * board[0].length) / 2 &&
+      setHasWon(true);
   }, [successCards]);
 
   useEffect(() => {
@@ -105,7 +101,7 @@ const App = () => {
       <h1>Memory Game</h1>
       {hasWon && (
         <>
-          <h2>Congrats! You won!</h2>
+          <Confetti />
           <StyledButton onClick={resetGame}>Reset game</StyledButton>
         </>
       )}
