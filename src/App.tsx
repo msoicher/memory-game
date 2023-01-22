@@ -19,7 +19,7 @@ const Container = styled.div`
 const StyledButton = styled.button`
   border-radius: 25px;
   background-color: #4681f4;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
 
 export type CardType = {
@@ -84,7 +84,7 @@ const App = () => {
 
   const disableCards = async () => {
     setIsDisabled(true);
-    await wait(500);
+    await wait(1000);
     setIsDisabled(false);
   };
 
@@ -99,12 +99,8 @@ const App = () => {
   return (
     <Container>
       <h1>Memory Game</h1>
-      {hasWon && (
-        <>
-          <Confetti />
-          <StyledButton onClick={resetGame}>Reset game</StyledButton>
-        </>
-      )}
+      <StyledButton onClick={resetGame}>Reset game</StyledButton>
+      {hasWon && <Confetti />}
       <Grid>
         {board.map((row: number[], rowIndex) =>
           row.map((value: number, colIndex) => (
