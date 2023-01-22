@@ -1,6 +1,6 @@
 # Memory Game
 
-This project is a very basic memory game I built just for fun, and to keep my React skills in shape.
+This project is a very basic memory game I built for fun.
 
 ## How to Run
 
