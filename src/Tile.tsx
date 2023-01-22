@@ -9,11 +9,9 @@ const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
   border: 1px solid black;
   width: 100px;
   height: 100px;
-  &:hover {
-    cursor: pointer;
-  }
   ${(props) => props.isOpen && "color: red;"}
-  ${(props) => props.isDisabled && "cursor: not-allowed;"}
+  ${(props) =>
+    props.isDisabled ? "cursor: not-allowed;" : "&:hover { cursor: pointer; }"}
 `;
 
 type TileProps = {
