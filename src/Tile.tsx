@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import { CardType } from "./App";
 
 const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
   display: flex;
@@ -17,12 +18,14 @@ const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
 
 type TileProps = {
   tileValue: number;
-  cardsOpen: number[];
-  setCardsOpen: (cards: number[]) => void;
+  cardsOpen: CardType[];
+  setCardsOpen: (cards: CardType[]) => void;
   numCardsOpen: number;
   setNumCardsOpen: (numCards: number) => void;
   successCards: number[];
   isDisabled: boolean;
+  rowIndex: number;
+  colIndex: number;
 };
 
 const Tile = (props: TileProps) => {
@@ -34,6 +37,8 @@ const Tile = (props: TileProps) => {
     setNumCardsOpen,
     successCards,
     isDisabled,
+    rowIndex,
+    colIndex,
   } = props;
 
   const isSuccessCard = () => successCards.indexOf(tileValue) !== -1;
@@ -48,16 +53,21 @@ const Tile = (props: TileProps) => {
 
   const valueToShow = isOpen ? tileValue : "?";
 
-  const handleTileClick = (tileValue: number) => {
+  const handleTileClick = (rowIndex: number, colIndex: number) => {
     setNumCardsOpen(numCardsOpen + 1);
-    setIsOpen(!isOpen); // we could be just turning 1 card around independently.
-    setCardsOpenArray(tileValue);
+    setIsOpen(!isOpen);
+    setCardsOpenArray(rowIndex, colIndex);
   };
 
-  const setCardsOpenArray = (tileValue: number) => {
-    const prevCardsOpen = cardsOpen;
-    const newCardsOpen = [...prevCardsOpen, tileValue];
-    setCardsOpen(newCardsOpen);
+  const setCardsOpenArray = (rowIndex: number, colIndex: number) => {
+    setCardsOpen([
+      ...cardsOpen,
+      {
+        tileValue,
+        colIndex,
+        rowIndex,
+      },
+    ]);
   };
 
   return (
@@ -65,8 +75,7 @@ const Tile = (props: TileProps) => {
       isOpen={isOpen}
       isDisabled={isDisabled}
       onClick={() =>
-        isDisabled ||
-        (!isOpen && !isSuccessCard() && handleTileClick(tileValue))
+        !isDisabled && !isSuccessCard() && handleTileClick(colIndex, rowIndex)
       }
     >
       <h1>{valueToShow}</h1>

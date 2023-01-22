@@ -21,6 +21,12 @@ const StyledButton = styled.button`
   margin-bottom: 20px;
 `;
 
+export type CardType = {
+  tileValue: number;
+  colIndex: number;
+  rowIndex: number;
+};
+
 const App = () => {
   const [board, setBoard] = useState<number[][]>([
     [1, 4, 6],
@@ -32,11 +38,14 @@ const App = () => {
   const [hasWon, setHasWon] = useState(false);
 
   // keep track of the cards that are currently open
-  const [cardsOpen, setCardsOpen] = useState<number[]>([]);
+  const [cardsOpen, setCardsOpen] = useState<CardType[]>([]);
+
   // keep track of the number of cards that are open
   const [numCardsOpen, setNumCardsOpen] = useState<number>(0);
+
   // array of values which represents card values that have been picked already
   const [successCards, setSuccessCards] = useState<number[]>([]);
+
   // boolean to make cards unclickable
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -67,7 +76,7 @@ const App = () => {
       setCardsOpen([]);
 
       isMatch(cardsOpen[0], cardsOpen[1])
-        ? onSuccess(cardsOpen[0])
+        ? onSuccess(cardsOpen[0].tileValue)
         : onFailure();
     }
   }, [numCardsOpen]);
@@ -101,8 +110,15 @@ const App = () => {
         </>
       )}
       <Grid>
-        {board.map((row: number[]) =>
-          row.map((value: number) => <Tile tileValue={value} {...props} />)
+        {board.map((row: number[], rowIndex) =>
+          row.map((value: number, colIndex) => (
+            <Tile
+              tileValue={value}
+              {...props}
+              rowIndex={rowIndex}
+              colIndex={colIndex}
+            />
+          ))
         )}
       </Grid>
     </Container>
