@@ -41,12 +41,10 @@ const Tile = (props: TileProps) => {
     colIndex,
   } = props;
 
-  const isSuccessCard = () => successCards.indexOf(tileValue) !== -1;
+  const isSuccessCard = successCards.indexOf(tileValue) !== -1;
 
-  // every time success cards changes, check if we are part of that success. If NOT,
-  // turn it back around.
   useEffect(() => {
-    !isSuccessCard() && setIsOpen(false);
+    !isSuccessCard && setIsOpen(false);
   }, [successCards]);
 
   const [isOpen, setIsOpen] = useState(isSuccessCard);
@@ -75,7 +73,7 @@ const Tile = (props: TileProps) => {
       isOpen={isOpen}
       isDisabled={isDisabled}
       onClick={() =>
-        !isDisabled && !isSuccessCard() && handleTileClick(colIndex, rowIndex)
+        !isDisabled && !isSuccessCard && handleTileClick(colIndex, rowIndex)
       }
     >
       <h1>{valueToShow}</h1>
