@@ -40,21 +40,21 @@ const board = [
 const App = () => {
   const [hasWon, setHasWon] = useState(false);
   const [tilesOpen, setTilesOpen] = useState<TileType[]>([]);
-  const [successCards, setSuccessCards] = useState<number[]>([]);
+  const [successTiles, setSuccessTiles] = useState<number[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
 
   const props = {
     tilesOpen,
     setTilesOpen,
-    successCards,
+    successTiles,
     isDisabled,
     setIsDisabled,
   };
 
   useEffect(() => {
-    successCards.length === (board.length * board[0].length) / 2 &&
+    successTiles.length === (board.length * board[0].length) / 2 &&
       setHasWon(true);
-  }, [successCards]);
+  }, [successTiles]);
 
   useEffect(() => {
     if (tilesOpen.length == 2) {
@@ -67,15 +67,15 @@ const App = () => {
   }, [tilesOpen]);
 
   const onSuccess = (successfulCard: number) => {
-    setSuccessCards([...successCards, successfulCard]);
+    setSuccessTiles([...successTiles, successfulCard]);
   };
 
   const onFailure = async () => {
-    await disableCards();
-    setSuccessCards([...successCards]);
+    await disableTiles();
+    setSuccessTiles([...successTiles]);
   };
 
-  const disableCards = async () => {
+  const disableTiles = async () => {
     setIsDisabled(true);
     await wait(1000);
     setIsDisabled(false);

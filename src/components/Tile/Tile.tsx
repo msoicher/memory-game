@@ -17,8 +17,8 @@ const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
 type TileProps = {
   tileValue: number;
   tilesOpen: TileType[];
-  setTilesOpen: (cards: TileType[]) => void;
-  successCards: number[];
+  setTilesOpen: (tiles: TileType[]) => void;
+  successTiles: number[];
   isDisabled: boolean;
   rowIndex: number;
   columnIndex: number;
@@ -29,17 +29,17 @@ const Tile = (props: TileProps) => {
     tileValue,
     tilesOpen,
     setTilesOpen,
-    successCards,
+    successTiles,
     isDisabled,
     rowIndex,
     columnIndex,
   } = props;
 
-  const isSuccessCard = successCards.indexOf(tileValue) !== -1;
+  const isSuccessCard = successTiles.indexOf(tileValue) !== -1;
 
   useEffect(() => {
     !isSuccessCard && setIsOpen(false);
-  }, [successCards]);
+  }, [successTiles]);
 
   const [isOpen, setIsOpen] = useState(isSuccessCard);
 
