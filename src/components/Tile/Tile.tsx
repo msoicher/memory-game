@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CardType } from "./App";
+import { TileType } from "./types";
 
 const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
   display: flex;
@@ -16,27 +16,23 @@ const Container = styled.div<{ isOpen: boolean; isDisabled: boolean }>`
 
 type TileProps = {
   tileValue: number;
-  cardsOpen: CardType[];
-  setCardsOpen: (cards: CardType[]) => void;
-  numCardsOpen: number;
-  setNumCardsOpen: (numCards: number) => void;
+  tilesOpen: TileType[];
+  setTilesOpen: (cards: TileType[]) => void;
   successCards: number[];
   isDisabled: boolean;
   rowIndex: number;
-  colIndex: number;
+  columnIndex: number;
 };
 
 const Tile = (props: TileProps) => {
   const {
     tileValue,
-    cardsOpen,
-    setCardsOpen,
-    numCardsOpen,
-    setNumCardsOpen,
+    tilesOpen,
+    setTilesOpen,
     successCards,
     isDisabled,
     rowIndex,
-    colIndex,
+    columnIndex,
   } = props;
 
   const isSuccessCard = successCards.indexOf(tileValue) !== -1;
@@ -49,18 +45,13 @@ const Tile = (props: TileProps) => {
 
   const valueToShow = isOpen ? tileValue : "?";
 
-  const handleTileClick = (rowIndex: number, colIndex: number) => {
-    setNumCardsOpen(numCardsOpen + 1);
+  const handleTileClick = (rowIndex: number, columnIndex: number) => {
     setIsOpen(!isOpen);
-    setCardsOpenArray(rowIndex, colIndex);
-  };
-
-  const setCardsOpenArray = (rowIndex: number, colIndex: number) => {
-    setCardsOpen([
-      ...cardsOpen,
+    setTilesOpen([
+      ...tilesOpen,
       {
-        tileValue,
-        colIndex,
+        value: tileValue,
+        columnIndex,
         rowIndex,
       },
     ]);
@@ -71,7 +62,7 @@ const Tile = (props: TileProps) => {
       isOpen={isOpen}
       isDisabled={isDisabled}
       onClick={() =>
-        !isDisabled && !isSuccessCard && handleTileClick(colIndex, rowIndex)
+        !isDisabled && !isSuccessCard && handleTileClick(columnIndex, rowIndex)
       }
     >
       <h1>{valueToShow}</h1>

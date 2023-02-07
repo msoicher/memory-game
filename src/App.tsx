@@ -1,10 +1,11 @@
-import { createContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Tile from "./Tile";
 import "./App.css";
 import { resetGame, wait } from "./utils";
 import { isMatch } from "./Helpers";
 import Confetti from "react-confetti";
+import { TileType } from "./components/Tile/types";
+import Tile from "./components/Tile/Tile";
 
 const Grid = styled.div`
   display: grid;
@@ -13,7 +14,7 @@ const Grid = styled.div`
 `;
 
 const StyledTitle = styled.h1`
-  color: #D6D42B;
+  color: #d6d42b;
 `;
 
 const Container = styled.div`
@@ -36,26 +37,18 @@ const board = [
   [6, 3, 5],
 ];
 
-export type CardType = {
-  tileValue: number;
-  colIndex: number;
-  rowIndex: number;
-};
-
 const App = () => {
   const [hasWon, setHasWon] = useState(false);
-  const [cardsOpen, setCardsOpen] = useState<CardType[]>([]);
-  const [numCardsOpen, setNumCardsOpen] = useState<number>(0);
+  const [tilesOpen, setTilesOpen] = useState<TileType[]>([]);
   const [successCards, setSuccessCards] = useState<number[]>([]);
   const [isDisabled, setIsDisabled] = useState(false);
 
   const props = {
-    cardsOpen,
-    setCardsOpen,
-    numCardsOpen,
-    setNumCardsOpen,
+    tilesOpen,
+    setTilesOpen,
     successCards,
     isDisabled,
+    setIsDisabled,
   };
 
   useEffect(() => {
@@ -64,15 +57,14 @@ const App = () => {
   }, [successCards]);
 
   useEffect(() => {
-    if (numCardsOpen == 2) {
-      isMatch(cardsOpen[0], cardsOpen[1])
-        ? onSuccess(cardsOpen[0].tileValue)
+    if (tilesOpen.length == 2) {
+      isMatch(tilesOpen[0], tilesOpen[1])
+        ? onSuccess(tilesOpen[0].value)
         : onFailure();
 
-      setNumCardsOpen(0);
-      setCardsOpen([]);
+      setTilesOpen([]);
     }
-  }, [numCardsOpen]);
+  }, [tilesOpen]);
 
   const onSuccess = (successfulCard: number) => {
     setSuccessCards([...successCards, successfulCard]);
@@ -96,11 +88,11 @@ const App = () => {
       <StyledButton onClick={resetGame}>Reset</StyledButton>
       <Grid>
         {board.map((row: number[], rowIndex) =>
-          row.map((value: number, colIndex) => (
+          row.map((value: number, columnIndex) => (
             <Tile
               tileValue={value}
               rowIndex={rowIndex}
-              colIndex={colIndex}
+              columnIndex={columnIndex}
               {...props}
             />
           ))
