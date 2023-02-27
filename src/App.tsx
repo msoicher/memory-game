@@ -6,6 +6,7 @@ import { isMatch } from "./Helpers";
 import Confetti from "react-confetti";
 import { TileType } from "./components/Tile/types";
 import Tile from "./components/Tile/Tile";
+import { useMemoryGame } from "./useGameLogic";
 
 const Grid = styled.div`
   display: grid;
@@ -30,7 +31,8 @@ const StyledButton = styled.button`
   margin-bottom: 40px;
 `;
 
-const board = [
+// todo: dynamically generate a board so that its always different.
+export const board = [
   [1, 4, 6],
   [2, 1, 2],
   [3, 4, 5],
@@ -38,52 +40,11 @@ const board = [
 ];
 
 const App = () => {
-  const [hasWon, setHasWon] = useState(false);
-  const [tilesOpen, setTilesOpen] = useState<TileType[]>([]);
-  const [successTiles, setSuccessTiles] = useState<number[]>([]);
-  const [isDisabled, setIsDisabled] = useState(false);
-
-  const props = {
-    tilesOpen,
-    setTilesOpen,
-    successTiles,
-    isDisabled,
-    setIsDisabled,
-  };
-
-  useEffect(() => {
-    successTiles.length === (board.length * board[0].length) / 2 &&
-      setHasWon(true);
-  }, [successTiles]);
-
-  useEffect(() => {
-    if (tilesOpen.length == 2) {
-      isMatch(tilesOpen[0], tilesOpen[1])
-        ? onSuccess(tilesOpen[0].value)
-        : onFailure();
-
-      setTilesOpen([]);
-    }
-  }, [tilesOpen]);
-
-  const onSuccess = (successfulCard: number) => {
-    setSuccessTiles([...successTiles, successfulCard]);
-  };
-
-  const onFailure = async () => {
-    await disableTiles();
-    setSuccessTiles([...successTiles]);
-  };
-
-  const disableTiles = async () => {
-    setIsDisabled(true);
-    await wait(1000);
-    setIsDisabled(false);
-  };
+  const props = useMemoryGame();
 
   return (
     <Container>
-      {hasWon && <Confetti />}
+      {props.hasWon && <Confetti />}
       <StyledTitle>Memory Game</StyledTitle>
       <StyledButton onClick={resetGame}>Reset</StyledButton>
       <Grid>
