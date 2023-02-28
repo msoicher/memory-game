@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 import "./App.css";
-import { resetGame, wait } from "./utils";
-import { isMatch } from "./Helpers";
+import { resetGame } from "./utils";
 import Confetti from "react-confetti";
-import { TileType } from "./components/Tile/types";
 import Tile from "./components/Tile/Tile";
-import { useMemoryGame } from "./useGameLogic";
+import { useMemoryGame } from "./hooks/useMemoryGame";
 
 const Grid = styled.div`
   display: grid;
@@ -15,7 +12,7 @@ const Grid = styled.div`
 `;
 
 const StyledTitle = styled.h1`
-  color: #d6d42b;
+  color: #fffb00;
 `;
 
 const Container = styled.div`
@@ -31,24 +28,15 @@ const StyledButton = styled.button`
   margin-bottom: 40px;
 `;
 
-// todo: dynamically generate a board so that its always different.
-export const board = [
-  [1, 4, 6],
-  [2, 1, 2],
-  [3, 4, 5],
-  [6, 3, 5],
-];
-
 const App = () => {
   const props = useMemoryGame();
-
   return (
     <Container>
       {props.hasWon && <Confetti />}
       <StyledTitle>Memory Game</StyledTitle>
       <StyledButton onClick={resetGame}>Reset</StyledButton>
       <Grid>
-        {board.map((row: number[], rowIndex) =>
+        {props.board.map((row: number[], rowIndex) =>
           row.map((value: number, columnIndex) => (
             <Tile
               tileValue={value}

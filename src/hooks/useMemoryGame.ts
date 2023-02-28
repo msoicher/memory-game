@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { board } from "./App";
-import { TileType } from "./components/Tile/types";
-import { isMatch } from "./Helpers";
-import { wait } from "./utils";
+import { TileType } from "../components/Tile/types";
+import { isMatch } from "../Helpers";
+import { generateBoard, wait } from "../utils";
+
+const board = generateBoard();
 
 export const useMemoryGame = () => {
   const [hasWon, setHasWon] = useState(false);
@@ -11,6 +12,7 @@ export const useMemoryGame = () => {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const props = {
+    board,
     tilesOpen,
     setTilesOpen,
     successTiles,
@@ -49,5 +51,5 @@ export const useMemoryGame = () => {
     setIsDisabled(false);
   };
 
-  return props
-}
+  return props;
+};
