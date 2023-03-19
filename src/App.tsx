@@ -4,6 +4,7 @@ import { resetGame } from "./utils";
 import Confetti from "react-confetti";
 import Tile from "./components/Tile/Tile";
 import { useMemoryGame } from "./hooks/useMemoryGame";
+import ViewOnGithub from "./ViewOnGithub";
 
 const Grid = styled.div`
   display: grid;
@@ -32,6 +33,13 @@ const App = () => {
   const props = useMemoryGame();
   return (
     <Container>
+      <>
+        View the source code on GitHub
+        <a href="https://github.com/msoicher/memory-game" target="_blank">
+          {" "}
+          here
+        </a>
+      </>
       {props.hasWon && <Confetti />}
       <StyledTitle>Memory Game</StyledTitle>
       <StyledButton onClick={resetGame}>Reset</StyledButton>
